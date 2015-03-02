@@ -22,7 +22,7 @@ public class Server {
 		try {
 			server=new ServerSocket(port);
 			client=server.accept();
-			client.getOutputStream().write("Bienvenue".getBytes());;
+			client.getOutputStream().write("Bienvenue \n".getBytes());;
 			open();
 			boolean done = false;
 	         while (!done)
