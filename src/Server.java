@@ -22,6 +22,7 @@ public class Server {
 		try {
 			server=new ServerSocket(port);
 			client=server.accept();
+			client.getOutputStream().write("Bienvenue".getBytes());;
 			open();
 			boolean done = false;
 	         while (!done)
@@ -63,5 +64,6 @@ public class Server {
 			e.printStackTrace();
 		}
 	}
+
 
 }
