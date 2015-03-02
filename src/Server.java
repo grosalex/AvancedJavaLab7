@@ -23,11 +23,12 @@ public class Server {
 		
 		try {
 			server=new ServerSocket(port);
+			client =server.accept();
 			while(true) {
-				readMessage(server.accept());
-				close();
+				readMessage(client);
+				
 			}
-			
+			//client.close();
 	        
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
