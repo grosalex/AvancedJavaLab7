@@ -1,6 +1,7 @@
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -22,17 +23,23 @@ public class Server {
 		try {
 			server=new ServerSocket(port);
 			client=server.accept();
-			client.getOutputStream().write("Bienvenue \n".getBytes());;
+
+			client.getOutputStream().write("Bienvenue \n".getBytes());
+
 			open();
 			boolean done = false;
+
 	         while (!done)
 	         {  try
-	            {  String line = streamIn.readUTF();
+	            {         
+	        	  
+	        	   String line = streamIn.readUTF();
 	               System.out.println(line);
 	               done = line.equals(".bye");
 	            }
 	            catch(IOException ioe)
 	            {  done = true;
+	            ioe.printStackTrace();
 	            }
 	         }
 	         close();
@@ -60,7 +67,6 @@ public class Server {
 		try {
 			streamIn = new DataInputStream(new BufferedInputStream(client.getInputStream()));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
