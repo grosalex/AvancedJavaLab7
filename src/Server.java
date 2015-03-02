@@ -1,6 +1,8 @@
 import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -11,7 +13,7 @@ public class Server {
 	InetAddress inet;
 	ServerSocket server;
 	Socket client;
-	private DataInputStream streamIn =  null;
+	
 	public Server(int inPort, InetAddress inInet){
 		this.port=inPort;
 		this.inet=inInet;
@@ -21,20 +23,12 @@ public class Server {
 		
 		try {
 			server=new ServerSocket(port);
-			client=server.accept();
-			open();
-			boolean done = false;
-	         while (!done)
-	         {  try
-	            {  String line = streamIn.readUTF();
-	               System.out.println(line);
-	               done = line.equals(".bye");
-	            }
-	            catch(IOException ioe)
-	            {  done = true;
-	            }
-	         }
-	         close();
+			while(true) {
+				readMessage(server.accept());
+				close();
+			}
+			
+	        
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -46,8 +40,7 @@ public class Server {
 			try {
 				if (client != null)
 					client.close();	     
-				if (streamIn != null)  
-					streamIn.close();		
+						
 
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -55,11 +48,11 @@ public class Server {
 			}
 	}
 
-	private void open() {
+	private void readMessage(Socket c) {
 		try {
-			streamIn = new DataInputStream(new BufferedInputStream(client.getInputStream()));
+			BufferedReader in = new BufferedReader(new InputStreamReader(c.getInputStream()));
+			System.out.println(in.readLine());
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
