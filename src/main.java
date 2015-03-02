@@ -10,6 +10,7 @@ public class main {
 			Server server = new Server(1026,adress);
 			
 			server.start();
+			
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
