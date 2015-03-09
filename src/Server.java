@@ -23,8 +23,9 @@ public class Server {
 		
 		try {
 			server=new ServerSocket(port);
-
 			client =server.accept();
+			client.getOutputStream().write("Welcome :D \n".getBytes());
+
 			while(message!=null) {
 				message = getMessage(client);
 				if(message!=null)
