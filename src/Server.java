@@ -11,7 +11,7 @@ public class Server {
 	ServerSocket server;
 	Socket client;
 	String message;
-	HashMap <Socket, String> hm;
+	
 	
 	public Server(int inPort, InetAddress inInet){
 		this.port=inPort;
@@ -22,12 +22,15 @@ public class Server {
 	public void start(){
 		
 		try {
-			hm = new HashMap<Socket, String>();
+			
+			
 			server=new ServerSocket(port);
 			while(true) {
 				client =server.accept();
 				ClientHandler ch = new ClientHandler(client);
 				ch.start();
+				
+				
 			}
 			
 	        

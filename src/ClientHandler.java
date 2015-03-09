@@ -2,16 +2,19 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.util.HashMap;
 
 
 public class ClientHandler extends Thread implements Runnable {
 	
 	Socket socket;
 	String message;
+	HashMap <Socket, String> hm;
 	
 	public ClientHandler (Socket s) {
 		this.socket = s;
 		this.message = "";
+		hm = new HashMap<Socket, String>();
 
 	}
 	
@@ -21,8 +24,17 @@ public class ClientHandler extends Thread implements Runnable {
 		while(message!=null) {
 			
 			message = getMessage(socket);
-			if(message!=null)
-				System.out.println(message);
+			if(message!=null){
+				if(message.startsWith("/nick")){
+					hm.put(socket, message.split(" ")[1]);
+				}
+				else if(hm.get(socket) != null){
+					System.out.println("<"+ hm.get(socket)+"> " + message);
+				}
+				else System.out.println("<"+"unknown"+"> "+message);
+				
+			}
+			
 		}
 		try {
 			socket.close();
