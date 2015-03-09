@@ -25,8 +25,8 @@ public class Server {
 	public void start(){
 
 		try {
+		
 			server=new ServerSocket(port);
-
 
 			while(true) {
 				client =server.accept();
@@ -35,6 +35,7 @@ public class Server {
 
 				ClientHandler ch = new ClientHandler(client, this);
 				ch.start();
+	
 			}
 
 
@@ -52,6 +53,7 @@ public class Server {
 		{
 		    if(!entry.getKey().equals(s)) {
 		    	try {
+		    		if(!msg.isEmpty())
 					entry.getValue().write((msg+"\n").getBytes());
 				} catch (IOException e) {
 					e.printStackTrace();
