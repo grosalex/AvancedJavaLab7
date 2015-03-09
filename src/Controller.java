@@ -12,7 +12,6 @@ public class Controller {
 			server.start();
 			
 		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
