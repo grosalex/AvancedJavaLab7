@@ -8,20 +8,21 @@ public class ClientHandler extends Thread implements Runnable {
 	
 	Socket socket;
 	String message;
+	Server serv;
 	
-	public ClientHandler (Socket s) {
+	public ClientHandler (Socket s, Server serv) {
 		this.socket = s;
 		this.message = "";
+		this.serv = serv;
 	}
 	
 	@Override
 	public void run() {
-		System.out.println(getMessage(socket));
+		serv.broadcast(socket, message);
 		while(message!=null) {
-			
 			message = getMessage(socket);
 			if(message!=null)
-				System.out.println(message);
+				serv.broadcast(socket, message);
 		}
 		try {
 			socket.close();
