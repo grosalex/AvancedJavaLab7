@@ -30,6 +30,7 @@ public class ClientHandler extends Thread implements Runnable {
 				}
 				else if(hm.get(socket) != null){
 					System.out.println("<"+ hm.get(socket)+"> " + message);
+
 				}
 				else System.out.println("<"+"unknown"+"> "+message);
 				
