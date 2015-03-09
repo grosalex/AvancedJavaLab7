@@ -22,18 +22,15 @@ public class Server {
 	public void start(){
 		
 		try {
-			
-			
+		
 			server=new ServerSocket(port);
-
 
 			while(true) {
 				client =server.accept();
 				client.getOutputStream().write("Welcome :D \n".getBytes());
 				ClientHandler ch = new ClientHandler(client);
 				ch.start();
-				
-				
+	
 			}
 			
 	        
