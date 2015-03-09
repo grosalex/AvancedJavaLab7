@@ -10,11 +10,13 @@ public class ClientHandler implements Runnable {
 	
 	public ClientHandler (Socket s) {
 		this.socket = s;
+		
 	}
 	
 	@Override
 	public void run() {
 		System.out.println(getMessage(socket));
+		
 		
 	}
 	

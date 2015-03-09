@@ -4,6 +4,7 @@ import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.HashMap;
 
 
 public class Server {
@@ -12,6 +13,7 @@ public class Server {
 	ServerSocket server;
 	Socket client;
 	String message;
+	HashMap <Socket, String> hm;
 	
 	public Server(int inPort, InetAddress inInet){
 		this.port=inPort;
