@@ -23,9 +23,9 @@ public class ServerChannel {
 		serverChannel  = ServerSocketChannel.open();
 
 		serverChannel.socket().bind(new InetSocketAddress(9999));
-
+		
 		while(true){
-		    SocketChannel socketChannel =serverChannel.accept();
+		    SocketChannel socketChannel = serverChannel.accept();
 
 		    //do something with socketChannel...
 		}
