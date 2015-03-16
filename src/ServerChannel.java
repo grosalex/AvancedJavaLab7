@@ -12,6 +12,11 @@ import java.nio.channels.SocketChannel;
 import java.util.Iterator;
 import java.util.Set;
 
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.channels.ServerSocketChannel;
+import java.nio.channels.SocketChannel;
+import java.nio.charset.Charset;
 
 public class ServerChannel {
 	private InetAddress inet;
@@ -55,6 +60,10 @@ public class ServerChannel {
 
 			    } else if (key.isReadable()) {
 			        // a channel is ready for reading
+				    ByteBuffer buf = ByteBuffer.allocate(128);
+				    socketChannel.read(buf);
+				    CharBuffer msg = Charset.forName("UTF-8").decode(buf);
+				    System.out.println(msg);
 
 			    } else if (key.isWritable()) {
 			        // a channel is ready for writing
@@ -62,6 +71,7 @@ public class ServerChannel {
 
 			    keyIterator.remove();
 			  }
+
 		    //do something with socketChannel...
 		}
 	}

@@ -9,33 +9,33 @@ public class ClientHandler extends Thread implements Runnable {
 	
 	Socket socket;
 	String message;
+	Server serv;
 	HashMap <Socket, String> hm;
 	
-	public ClientHandler (Socket s) {
+	public ClientHandler (Socket s, Server serv) {
 		this.socket = s;
 		this.message = "";
+		this.serv = serv;
 		hm = new HashMap<Socket, String>();
-
 	}
 	
 	@Override
 	public void run() {
-		System.out.println(getMessage(socket));
+		serv.broadcast(socket, message);
 		while(message!=null) {
-			
 			message = getMessage(socket);
+
 			if(message!=null){
+				
 				if(message.startsWith("/nick")){
 					hm.put(socket, message.split(" ")[1]);
 				}
 				else if(hm.get(socket) != null){
-					System.out.println("<"+ hm.get(socket)+"> " + message);
-
+					serv.broadcast(socket, "<"+ hm.get(socket)+"> " + message);
 				}
-				else System.out.println("<"+"unknown"+"> "+message);
+				else serv.broadcast(socket, "<"+"unknown"+"> "+message);
 				
 			}
-			
 		}
 		try {
 			socket.close();
