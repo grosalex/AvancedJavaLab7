@@ -73,7 +73,6 @@ public class ServerChannel {
 
 			    keyIterator.remove();
 			  }
->>>>>>> 398986a9c0eb600628a08c73ad37415b645e22a2
 
 		    //do something with socketChannel...
 		}
