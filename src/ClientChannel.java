@@ -18,7 +18,7 @@ public class ClientChannel {
 		try {
 			this.socket = new MulticastSocket(port);
 		} catch (IOException e) {			
-			e.printStackTrace();
+			System.out.println(e);
 		}
 		
 		this.group = inet;
@@ -26,7 +26,7 @@ public class ClientChannel {
 		try {
 			socket.joinGroup(group);
 		} catch (IOException e) {
-			e.printStackTrace();
+			System.out.println(e);
 		}
 		
 	}
@@ -35,8 +35,9 @@ public class ClientChannel {
 		DatagramPacket pkt = new DatagramPacket(msg.getBytes(), msg.length(), group, port);
 		try {
 			socket.send(pkt);
+			System.out.println("envoyé");
 		} catch (IOException e) {
-			e.printStackTrace();
+			System.out.println(e);
 		}
 	}
 

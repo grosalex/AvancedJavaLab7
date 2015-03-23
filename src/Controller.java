@@ -18,18 +18,27 @@ public class Controller {
 
 		//launch(args);
 
+
 		try {
 
 			InetAddress adress = InetAddress.getByName("233.11.12.13");
-			ServerChannel server = new ServerChannel(adress,1026);
-			
-			try {
-				server.start();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			switch(args[0]){
+			case "s": 
+				ServerChannel server = new ServerChannel(adress,1026);
+				try {
+					server.start();
+				} catch (IOException e) {
+					System.out.println(e);
+				}
+				break;
+			case "c":
+				ClientChannel client = new ClientChannel(1026, adress);
+				client.sendMessage();
+				break;
 			}
-			
+
+
+
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		}
