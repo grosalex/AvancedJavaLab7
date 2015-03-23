@@ -53,7 +53,9 @@ public class ServerChannel {
 			    SelectionKey selectionKey = keyIterator.next();
 
 			    if(key.isAcceptable()) {
-			        // a connection was accepted by a ServerSocketChannel.
+			        ClientChannel client = new ClientChannel(port, inet);
+			        client.sendMessage();
+			        
 
 			    } else if (key.isConnectable()) {
 			        // a connection was established with a remote server.

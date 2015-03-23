@@ -7,7 +7,7 @@ public class Controller {
 
 	public static void main(String[] args) {
 		try {
-			InetAddress adress = InetAddress.getByName("127.0.0.1");
+			InetAddress adress = InetAddress.getByName("233.11.12.13");
 			ServerChannel server = new ServerChannel(adress,1026);
 			
 			try {
