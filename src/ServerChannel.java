@@ -22,63 +22,68 @@ import java.nio.channels.SocketChannel;
 import java.nio.charset.Charset;
 
 public class ServerChannel {
-	private InetAddress inet;
-	private int port;
-	private ServerSocketChannel serverChannel;
-
-	public ServerChannel(InetAddress inet,int port){
-		this.inet=inet;
-		this.port=port;
-	}
-
-	public void start() throws IOException{
-		
-		serverChannel  = ServerSocketChannel.open();
-		serverChannel.bind(new InetSocketAddress(inet, port));
-		
+	
+	public ServerChannel() throws IOException{
 		Selector selector = Selector.open();
-		serverChannel.configureBlocking(false);
-		serverChannel.register(selector, SelectionKey.OP_ACCEPT);
-		
-		while(true){
-			System.out.println("in while true");
-			selector.select();
-			Set<SelectionKey> keys = selector.selectedKeys();
-			Iterator<SelectionKey> keyIterator = keys.iterator();
-			ByteBuffer buf = ByteBuffer.allocate(8192);
-			
-			while(keyIterator.hasNext()) {
-				System.out.println("init");
-				
-				SelectionKey key = keyIterator.next();
-
-				if(key.isAcceptable()) {
-					SocketChannel socketChannel = serverChannel.accept();
-					socketChannel.register(selector, SelectionKey.OP_READ);
 
 
-				} if (key.isConnectable()) {
-					// a connection was established with a remote server.
+		ServerSocketChannel serverSocket = ServerSocketChannel.open();
 
-				} if (key.isReadable()) {
-					// a channel is ready for reading
-					System.out.println("isreadable");
+		InetSocketAddress hostAddress = new InetSocketAddress("localhost", 5454);
 
-				    ((SocketChannel)key.channel()).read(buf);
-				    Charset charset = Charset.defaultCharset();
-				    buf.flip();
-				    CharBuffer msg = charset.decode(buf);
-				    System.out.println(msg);
-				    buf.compact();
-					
-				} if (key.isWritable()) {
-					// a channel is ready for writing
+		serverSocket.bind(hostAddress);
+
+		serverSocket.configureBlocking(false);
+
+		int ops = serverSocket.validOps();
+
+		SelectionKey selectKy = serverSocket.register(selector, ops, null);
+
+		for (;;) {
+			System.out.println("Waiting for select...");
+
+			int noOfKeys = selector.select();
+
+
+			Set selectedKeys = selector.selectedKeys();
+
+			Iterator iter = selectedKeys.iterator();
+
+			while (iter.hasNext()) {
+
+				SelectionKey ky = (SelectionKey) iter.next();
+
+				if (ky.isAcceptable()) {
+
+					SocketChannel client = serverSocket.accept();
+
+					client.configureBlocking(false);
+
+					client.register(selector, SelectionKey.OP_READ);
+
+					System.out.println("Accepted new connection from client: " + client);
+
 				}
 
-				keyIterator.remove();
-			}
+				else if (ky.isReadable()) {
 
-			//do something with socketChannel...
-		}
+					SocketChannel client = (SocketChannel) ky.channel();
+
+					ByteBuffer buffer = ByteBuffer.allocate(256);
+
+					client.read(buffer);
+
+					String output = new String(buffer.array()).trim();
+
+					System.out.println(output);
+
+		
+				} // end if (ky...)
+
+				iter.remove();
+
+			} // end while loop
+		} // end for loop
 	}
+
 }

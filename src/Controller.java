@@ -11,16 +11,25 @@ public class Controller {
 			InetAddress adress = InetAddress.getByName("233.11.12.13");
 			switch(args[0]){
 			case "s": 
-				ServerChannel server = new ServerChannel(adress,1026);
 				try {
-					server.start();
+					ServerChannel server = new ServerChannel();
 				} catch (IOException e) {
-					System.out.println(e);
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
+
 				break;
 			case "c":
-				ClientChannel client = new ClientChannel(1026, adress);
-				client.sendMessage();
+				ClientChannel client;
+				try {
+					client = new ClientChannel(1026, adress);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				break;
 			}
 
