@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.net.InetAddress;
 
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -14,11 +15,20 @@ public class ChatView {
 	
 	private Stage primaryStage;
 	private Scene vb;
-	
-	
-	public ChatView(Stage primaryStage){
-		this.primaryStage=primaryStage;
+	private ClientChannel client;
 
+	
+	public ChatView(Stage primaryStage, InetAddress adress, String arg){
+		this.primaryStage=primaryStage;
+		try {
+			client = new ClientChannel(1026, adress, arg);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public void start() {

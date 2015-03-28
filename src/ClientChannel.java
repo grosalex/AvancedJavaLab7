@@ -24,11 +24,7 @@ public class ClientChannel {
 
 		SocketChannel client = SocketChannel.open(hostAddress);
 		ByteBuffer tmp=ByteBuffer.allocate(256);
-		
-		client.read(tmp);
-		String output = new String(tmp.array()).trim();
 		client.write(ByteBuffer.wrap(nick.getBytes()));
-		System.out.println(output);
 		Thread read = new Thread(new Runnable() {
 			
 			@Override
