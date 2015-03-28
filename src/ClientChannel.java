@@ -14,16 +14,20 @@ public class ClientChannel {
 	MulticastSocket socket;
 	InetAddress group;
 	String msg;
+	String myNick;
 	int port;
 
-	public ClientChannel(int port, InetAddress inet) throws IOException, InterruptedException {
+	public ClientChannel(int port, InetAddress inet, String nick) throws IOException, InterruptedException {
+		myNick=nick;
 		InetSocketAddress hostAddress = new InetSocketAddress("localhost", 5454);
 
 		SocketChannel client = SocketChannel.open(hostAddress);
-
-		System.out.println("Client sending messages to server...");
-
-		String [] messages = new String [] {"Time goes fast.", "What now?", "Bye."};
+		ByteBuffer tmp=ByteBuffer.allocate(256);
+		
+		client.read(tmp);
+		String output = new String(tmp.array()).trim();
+		client.write(ByteBuffer.wrap(nick.getBytes()));
+		System.out.println(output);
 
 		for(;;){
 			
@@ -32,10 +36,10 @@ public class ClientChannel {
 		    try {
 		       entreeClavier = new BufferedReader(new InputStreamReader(System.in));
 		       while(true) {
-					  String texte = entreeClavier.readLine();
+					  	String texte = entreeClavier.readLine();
 						ByteBuffer buff = ByteBuffer.wrap(texte.getBytes());
 						client.write(buff);
-		       }
+		      }
 		    }    catch (Exception exc) {
 		        System.out.println(exc);
 		    }

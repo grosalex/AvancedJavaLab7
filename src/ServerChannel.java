@@ -43,8 +43,6 @@ public class ServerChannel {
 			System.out.println("Waiting for select...");
 
 			int noOfKeys = selector.select();
-
-
 			Set selectedKeys = selector.selectedKeys();
 
 			Iterator iter = selectedKeys.iterator();
@@ -60,24 +58,28 @@ public class ServerChannel {
 					client.configureBlocking(false);
 
 					client.register(selector, SelectionKey.OP_READ);
-
-					System.out.println("Accepted new connection from client: " + client);
-
-				}
-
-				else if (ky.isReadable()) {
-
-					SocketChannel client = (SocketChannel) ky.channel();
-
 					ByteBuffer buffer = ByteBuffer.allocate(256);
 
 					client.read(buffer);
 
 					String output = new String(buffer.array()).trim();
 
+					System.out.println("Accepted new connection from client: " + output);
+
+					client.write(ByteBuffer.wrap(("Hello " + output ).getBytes()));
+
+				}
+
+				else if (ky.isReadable()) {
+
+					SocketChannel client = (SocketChannel) ky.channel();
+					ByteBuffer buffer = ByteBuffer.allocate(256);
+					client.read(buffer);
+
+					String output = new String(buffer.array()).trim();
+
 					System.out.println(output);
 
-		
 				} // end if (ky...)
 
 				iter.remove();
