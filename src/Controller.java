@@ -106,6 +106,7 @@ public class Controller extends Application {
 				System.out.println("-n , -- nio configure the server in NIO mode");
 				System.out.println("-p , -- port = PORT set the port");
 				System.out.println("-s , -- server start the server");
+				System.out.println("-w , -- nick = NICK set nickname");
 				break;
 			case 'n':
 				nio = true;
@@ -114,7 +115,6 @@ public class Controller extends Application {
 				port = Integer.parseInt(g.getOptarg());
 				break;
 			case 'm':
-				System.out.println("over");
 				multicast = true;
 				break;
 			case 's':
