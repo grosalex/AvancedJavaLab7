@@ -2,26 +2,25 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
+import javafx.application.Application;
 import javafx.stage.Stage;
 
-public class Controller {
+public class Controller extends Application {
 
-	//private ChatView v;
+	private ChatView v;
+	private static InetAddress adress;
+	private static String nick;
 
-	/*public void start(Stage primaryStage) {
+	public void start(Stage primaryStage) {
 
-			v = new View(primaryStage);
-			v.start(this);
-	}*/
+			v = new ChatView(primaryStage, adress, nick);
+			v.start();
+	}
 
 	public static void main(String[] args) {
-
-		//launch(args);
-
-
 		try {
 
-			InetAddress adress = InetAddress.getByName("233.11.12.13");
+			adress = InetAddress.getByName("233.11.12.13");
 			switch(args[0]){
 			case "s": 
 				try {
@@ -33,16 +32,9 @@ public class Controller {
 
 				break;
 			case "c":
-				ClientChannel client;
-				try {
-					client = new ClientChannel(1026, adress, args[1]);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				nick=args[1];
+				launch(args);
+
 				break;
 			case "m":
 				MultiCastClient c = new MultiCastClient();
