@@ -45,7 +45,7 @@ public class ClientHandler extends Thread implements Runnable {
 			socket.close();
 		} catch (IOException e) {
 			if(debug) {
-				Logger log = Logger.getLogger(Controller.class.getName());
+				Logger log = Logger.getLogger(ClientHandler.class.getName());
 				ConsoleHandler ch =  new ConsoleHandler();
 				log.addHandler(ch);
 				log.severe(e.getMessage());
@@ -61,7 +61,7 @@ public class ClientHandler extends Thread implements Runnable {
 			return in.readLine();
 		} catch (IOException e) {
 			if(debug) {
-				Logger log = Logger.getLogger(Controller.class.getName());
+				Logger log = Logger.getLogger(ClientHandler.class.getName());
 				ConsoleHandler ch =  new ConsoleHandler();
 				log.addHandler(ch);
 				log.severe(e.getMessage());

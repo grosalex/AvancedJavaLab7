@@ -78,9 +78,6 @@ public class ServerChannel {
 					clientMap.put(client, output);
 					msgs.put(client,client.socket().getOutputStream());
 
-					System.out.println("Accepted new connection from client: " + output);
-					//client.write(ByteBuffer.wrap(("Welcome : " + output ).getBytes()));
-
 				}
 
 				else if (ky.isReadable()) {
@@ -95,12 +92,12 @@ public class ServerChannel {
 					System.out.println(output);
 					buffer.clear();
 
-				} // end if (ky...)
+				}
 
 				iter.remove();
 
-			} // end while loop
-		} // end for loop
+			} 
+		} 
 	}
 	
 	public synchronized void broadcast(SocketChannel s, String msg) {
@@ -112,7 +109,7 @@ public class ServerChannel {
 					entry.getKey().write( ByteBuffer.wrap((msg+"\n").getBytes()));
 				} catch (IOException e) {
 					if(debug) {
-						Logger log = Logger.getLogger(Controller.class.getName());
+						Logger log = Logger.getLogger(ServerChannel.class.getName());
 						ConsoleHandler ch =  new ConsoleHandler();
 						log.addHandler(ch);
 						log.severe(e.getMessage());

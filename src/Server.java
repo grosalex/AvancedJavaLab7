@@ -45,7 +45,7 @@ public class Server {
 
 		} catch (IOException e) {
 			if(debug) {
-				Logger log = Logger.getLogger(Controller.class.getName());
+				Logger log = Logger.getLogger(Server.class.getName());
 				ConsoleHandler ch =  new ConsoleHandler();
 				log.addHandler(ch);
 				log.severe(e.getMessage());
@@ -66,7 +66,7 @@ public class Server {
 					entry.getValue().write((msg+"\n").getBytes());
 				} catch (IOException e) {
 					if(debug) {
-						Logger log = Logger.getLogger(Controller.class.getName());
+						Logger log = Logger.getLogger(Server.class.getName());
 						ConsoleHandler ch =  new ConsoleHandler();
 						log.addHandler(ch);
 						log.severe(e.getMessage());

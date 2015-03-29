@@ -53,15 +53,12 @@ public class ClientChannel {
 						tmp.flip();
 						String output = new String(tmp.array());
 						System.out.println("output :" +output);
-						/*if(output.startsWith("buddy")){
-							buddys.add(output.split(":")[1]);
-						}
-						else*/
+
 						items.add(output);
 						tmp.clear();
 					} catch (IOException e) {
 						if(debug) {
-							Logger log = Logger.getLogger(Controller.class.getName());
+							Logger log = Logger.getLogger(ClientChannel.class.getName());
 							ConsoleHandler ch =  new ConsoleHandler();
 							log.addHandler(ch);
 							log.severe(e.getMessage());
@@ -71,23 +68,7 @@ public class ClientChannel {
 			}
 		});
 		read.start();
-		/*for(;;){
-			
-		    BufferedReader entreeClavier;
-		    
-		    try {
-		       entreeClavier = new BufferedReader(new InputStreamReader(System.in));
-		       while(true) {
-					  	String texte = entreeClavier.readLine();
-						ByteBuffer buff = ByteBuffer.wrap((myNick+ " : " +texte).getBytes());
-						client.write(buff);
-		      }
-		    }    catch (Exception exc) {
-		        System.out.println(exc);
-		    }
 
-
-		}*/
 
 
 	}
@@ -99,7 +80,7 @@ public class ClientChannel {
 			client.write(buff);
 		} catch (IOException e) {
 			if(debug) {
-				Logger log = Logger.getLogger(Controller.class.getName());
+				Logger log = Logger.getLogger(ClientChannel.class.getName());
 				ConsoleHandler ch =  new ConsoleHandler();
 				log.addHandler(ch);
 				log.severe(e.getMessage());

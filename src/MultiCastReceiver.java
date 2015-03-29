@@ -31,7 +31,6 @@ public class MultiCastReceiver implements Runnable{
 		DatagramPacket inPacket = null;
 		byte[] inBuf = new byte[256];
 		try {
-			//Prepare to join multicast group
 			socket = new MulticastSocket(8888);
 			InetAddress address = InetAddress.getByName("224.2.2.3");
 			socket.joinGroup(address);
@@ -46,7 +45,7 @@ public class MultiCastReceiver implements Runnable{
 			}
 		} catch (IOException ioe) {
 			if(debug) {
-				Logger log = Logger.getLogger(Controller.class.getName());
+				Logger log = Logger.getLogger(MultiCastReceiver.class.getName());
 				ConsoleHandler ch =  new ConsoleHandler();
 				log.addHandler(ch);
 				log.severe(ioe.getMessage());

@@ -16,9 +16,7 @@ import javafx.scene.control.TextField;
 public class MultiCastSender {
 	private TextField message;
 	private ListView<String> list;
-	private ListView<String> buddy;
 	private ObservableList<String> items;
-	private ObservableList<String> buddys;
 	private byte[] outBuf;
 	private DatagramSocket socket = null;
 	final int PORT = 8888;
@@ -26,7 +24,6 @@ public class MultiCastSender {
 
 	public MultiCastSender(boolean d){
 		items =FXCollections.observableArrayList();
-		buddys = FXCollections.observableArrayList();
 		DatagramPacket outPacket = null;
 		this.debug = d;
 
@@ -34,35 +31,9 @@ public class MultiCastSender {
 		try {
 			socket = new DatagramSocket();	
 			String msg ="";
-/*
-			while (true) {
-				BufferedReader entreeClavier;
-
-				try {
-					entreeClavier = new BufferedReader(new InputStreamReader(System.in));
-					msg = entreeClavier.readLine();
-				}    catch (Exception exc) {
-					if(debug) {
-						Logger log = Logger.getLogger(Controller.class.getName());
-						ConsoleHandler ch =  new ConsoleHandler();
-						log.addHandler(ch);
-						log.severe(exc.getMessage());
-					}
-				}
-				if(msg!="") {
-					outBuf = msg.getBytes();
-
-					//Send to multicast IP address and port
-					InetAddress address = InetAddress.getByName("224.2.2.3");
-					outPacket = new DatagramPacket(outBuf, outBuf.length, address, PORT);
-
-					socket.send(outPacket);
-				}
-
-			}*/
 		} catch (IOException ioe) {
 			if(debug) {
-				Logger log = Logger.getLogger(Controller.class.getName());
+				Logger log = Logger.getLogger(MultiCastSender.class.getName());
 				ConsoleHandler ch =  new ConsoleHandler();
 				log.addHandler(ch);
 				log.severe(ioe.getMessage());
@@ -75,10 +46,8 @@ public class MultiCastSender {
 			ListView<String> buddy) {
 		this.message=message;
 		this.list=list;
-		this.buddy=buddy;
 		
 		list.setItems(items);
-		buddy.setItems(buddys);
 	}
 
 
@@ -86,7 +55,6 @@ public class MultiCastSender {
 		outBuf = message.getText().getBytes();
 		DatagramPacket outPacket = null;
 
-		//Send to multicast IP address and port
 		InetAddress address;
 		try {
 			address = InetAddress.getByName("224.2.2.3");

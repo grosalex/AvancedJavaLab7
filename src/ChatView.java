@@ -95,7 +95,7 @@ public class ChatView {
 				client = new ClientChannel(1026, address, nick,message,list,buddy,debug);
 			} catch (IOException | InterruptedException e1) {
 				if(debug) {
-					Logger log = Logger.getLogger(Controller.class.getName());
+					Logger log = Logger.getLogger(ChatView.class.getName());
 					ConsoleHandler ch =  new ConsoleHandler();
 					log.addHandler(ch);
 					log.severe(e1.getMessage());
@@ -104,22 +104,6 @@ public class ChatView {
 		}
 
 
-
-		/*		Thread service = new Thread(new Runnable() {
-				@Override
-				public void run() {
-					try {
-						client = new ClientChannel(1026, address, nick,message,list,buddy);
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-			});
-			service.start();*/
 
 
 	}
