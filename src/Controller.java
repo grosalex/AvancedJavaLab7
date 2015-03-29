@@ -28,7 +28,8 @@ public class Controller extends Application {
 			v = new ChatView(primaryStage, nick,c,debug);
 			v.start();
 		}
-		else {
+		else{
+
 			v = new ChatView(primaryStage, address,port, nick,debug);
 			v.start();
 		}
