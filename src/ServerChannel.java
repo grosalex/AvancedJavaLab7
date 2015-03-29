@@ -19,6 +19,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Logger;
 import java.util.Set;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
@@ -30,8 +32,10 @@ public class ServerChannel {
 	private Map<SocketChannel,String> clientMap;
 	
 	HashMap <SocketChannel,OutputStream> msgs;
+	private boolean debug;
 
-	public ServerChannel() throws IOException{
+	public ServerChannel(boolean d) throws IOException{
+		this.debug = d;
 		Selector selector = Selector.open();
 		msgs = new HashMap<>();
 
@@ -107,7 +111,12 @@ public class ServerChannel {
 		    		if(!msg.isEmpty())
 					entry.getKey().write( ByteBuffer.wrap((msg+"\n").getBytes()));
 				} catch (IOException e) {
-					e.printStackTrace();
+					if(debug) {
+						Logger log = Logger.getLogger(Controller.class.getName());
+						ConsoleHandler ch =  new ConsoleHandler();
+						log.addHandler(ch);
+						log.severe(e.getMessage());
+					}
 				}
 		    }
 		    

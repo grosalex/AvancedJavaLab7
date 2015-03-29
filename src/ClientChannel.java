@@ -9,6 +9,8 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Logger;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -17,23 +19,25 @@ import javafx.scene.control.TextField;
 
 public class ClientChannel {
 
-	Socket socket;
-	InetAddress group;
-	String msg;
-	String myNick;
+	private Socket socket;
+	private InetAddress group;
+	private String msg;
+	private String myNick;
 	private SocketChannel client;
-	int port;
+	private int port;
 	private TextField message;
 	private ListView<String> list;
 	private ListView<String> buddy;
 	private ObservableList<String> items;
 	private ObservableList<String> buddys;
+	private boolean debug;
 
-	public ClientChannel(int port, InetAddress inet, String nick, TextField message, ListView<String> list, ListView<String> buddy) throws IOException, InterruptedException {
+	public ClientChannel(int port, InetAddress inet, String nick, TextField message, ListView<String> list, ListView<String> buddy, boolean d) throws IOException, InterruptedException {
 		myNick=nick;
 		this.message = message;
 		this.list=list;
 		this.buddy=buddy;
+		this.debug = d;
 		
 		items =FXCollections.observableArrayList();
 		buddys = FXCollections.observableArrayList();
@@ -59,8 +63,12 @@ public class ClientChannel {
 						else*/
 						items.add(output);
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+						if(debug) {
+							Logger log = Logger.getLogger(Controller.class.getName());
+							ConsoleHandler ch =  new ConsoleHandler();
+							log.addHandler(ch);
+							log.severe(e.getMessage());
+						}
 					}
 				}
 			}
@@ -93,8 +101,12 @@ public class ClientChannel {
 		try {
 			client.write(buff);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			if(debug) {
+				Logger log = Logger.getLogger(Controller.class.getName());
+				ConsoleHandler ch =  new ConsoleHandler();
+				log.addHandler(ch);
+				log.severe(e.getMessage());
+			}
 		}
 	}
 

@@ -2,6 +2,8 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Logger;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -10,14 +12,17 @@ import javafx.scene.control.TextField;
 
 
 public class MultiCastReceiver implements Runnable{
+	private boolean debug;
 	private TextField message;
 	private  ListView<String> list;
 	private ListView<String> buddy;
 	private ObservableList<String> items;
 	private ObservableList<String> buddys;
-	public MultiCastReceiver() {
+	public MultiCastReceiver(boolean debug) {
+		this.debug = debug;
 		items =FXCollections.observableArrayList();
 		buddys = FXCollections.observableArrayList();
+
 	}
 
 	@Override
@@ -40,9 +45,14 @@ public class MultiCastReceiver implements Runnable{
 				list.setItems(items);
 			}
 		} catch (IOException ioe) {
-			System.out.println(ioe);
+			if(debug) {
+				Logger log = Logger.getLogger(Controller.class.getName());
+				ConsoleHandler ch =  new ConsoleHandler();
+				log.addHandler(ch);
+				log.severe(ioe.getMessage());
+			}
 		}
-		
+
 	}
 
 	public void config(TextField message, ListView<String> list,
@@ -50,7 +60,7 @@ public class MultiCastReceiver implements Runnable{
 		this.message=message;
 		this.list=list;
 		this.buddy=buddy;
-		
+
 		this.list.setItems(items);
 		this.buddy.setItems(buddys);
 	}

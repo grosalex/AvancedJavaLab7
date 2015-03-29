@@ -5,6 +5,8 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Logger;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -20,11 +22,13 @@ public class MultiCastSender {
 	private byte[] outBuf;
 	private DatagramSocket socket = null;
 	final int PORT = 8888;
+	private boolean debug;
 
-	public MultiCastSender(){
+	public MultiCastSender(boolean d){
 		items =FXCollections.observableArrayList();
 		buddys = FXCollections.observableArrayList();
 		DatagramPacket outPacket = null;
+		this.debug = d;
 
 
 		try {
@@ -38,7 +42,12 @@ public class MultiCastSender {
 					entreeClavier = new BufferedReader(new InputStreamReader(System.in));
 					msg = entreeClavier.readLine();
 				}    catch (Exception exc) {
-					System.out.println(exc);
+					if(debug) {
+						Logger log = Logger.getLogger(Controller.class.getName());
+						ConsoleHandler ch =  new ConsoleHandler();
+						log.addHandler(ch);
+						log.severe(exc.getMessage());
+					}
 				}
 				if(msg!="") {
 					outBuf = msg.getBytes();
@@ -52,7 +61,12 @@ public class MultiCastSender {
 
 			}*/
 		} catch (IOException ioe) {
-			System.out.println(ioe);
+			if(debug) {
+				Logger log = Logger.getLogger(Controller.class.getName());
+				ConsoleHandler ch =  new ConsoleHandler();
+				log.addHandler(ch);
+				log.severe(ioe.getMessage());
+			}
 		}
 	}
 

@@ -3,6 +3,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 import java.util.HashMap;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Logger;
 
 
 public class ClientHandler extends Thread implements Runnable {
@@ -11,8 +13,10 @@ public class ClientHandler extends Thread implements Runnable {
 	String message;
 	Server serv;
 	HashMap <Socket, String> hm;
+	private boolean debug;
 	
-	public ClientHandler (Socket s, Server serv) {
+	public ClientHandler (Socket s, Server serv, boolean d) {
+		this.debug = d;
 		this.socket = s;
 		this.message = "";
 		this.serv = serv;
@@ -40,7 +44,12 @@ public class ClientHandler extends Thread implements Runnable {
 		try {
 			socket.close();
 		} catch (IOException e) {
-			e.printStackTrace();
+			if(debug) {
+				Logger log = Logger.getLogger(Controller.class.getName());
+				ConsoleHandler ch =  new ConsoleHandler();
+				log.addHandler(ch);
+				log.severe(e.getMessage());
+			}
 		}
 		
 		
@@ -51,7 +60,12 @@ public class ClientHandler extends Thread implements Runnable {
 			BufferedReader in = new BufferedReader(new InputStreamReader(c.getInputStream()));
 			return in.readLine();
 		} catch (IOException e) {
-			e.printStackTrace();
+			if(debug) {
+				Logger log = Logger.getLogger(Controller.class.getName());
+				ConsoleHandler ch =  new ConsoleHandler();
+				log.addHandler(ch);
+				log.severe(e.getMessage());
+			}
 		}
 		
 		return null;

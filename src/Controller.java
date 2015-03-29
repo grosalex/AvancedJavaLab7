@@ -4,6 +4,8 @@ import gnu.getopt.LongOpt;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Logger;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -19,17 +21,18 @@ public class Controller extends Application {
 	private static boolean debug;
 	private static boolean server;
 	private static boolean multicast;
-	
+
 
 	public void start(Stage primaryStage) {
 		if(multicast){
-			MultiCastClient c = new MultiCastClient();
-			v = new ChatView(primaryStage, address, nick,c);
+			MultiCastClient c = new MultiCastClient(debug);
+			v = new ChatView(primaryStage, address, nick,c,debug);
 			System.out.println("here");
 			v.start();
 		}
 		else{
-			v = new ChatView(primaryStage, address, nick);
+			v = new ChatView(primaryStage, address, nick,debug);
+
 			v.start();
 
 		}
@@ -41,16 +44,20 @@ public class Controller extends Application {
 			addressString = "127.0.0.1";
 			port = 5454;
 			nick = "Guest";
-			
+
 			options(args);
-			
+
 			switch(args[0]){
 			case "s": 
 				try {
-					ServerChannel server = new ServerChannel();
+					ServerChannel server = new ServerChannel(debug);
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					if(debug) {
+						Logger log = Logger.getLogger(Controller.class.getName());
+						ConsoleHandler ch =  new ConsoleHandler();
+						log.addHandler(ch);
+						log.severe(e.getMessage());
+					}
 				}
 
 				break;
@@ -67,7 +74,12 @@ public class Controller extends Application {
 			}
 
 		} catch (UnknownHostException e) {
-			e.printStackTrace();
+			if(debug) {
+				Logger log = Logger.getLogger(Controller.class.getName());
+				ConsoleHandler ch =  new ConsoleHandler();
+				log.addHandler(ch);
+				log.severe(e.getMessage());
+			}
 		}
 
 
@@ -116,11 +128,11 @@ public class Controller extends Application {
 			case 'd':
 				debug = true;
 				break;
-				
+
 			case 'w':
 				nick = g.getOptarg();
 				break;
-				
+
 			default:
 				System.out.println("Invalid option");
 			}

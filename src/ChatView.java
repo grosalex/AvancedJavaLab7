@@ -1,5 +1,7 @@
 import java.io.IOException;
 import java.net.InetAddress;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Logger;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -20,20 +22,23 @@ public class ChatView {
 	private ClientChannel client;
 	private InetAddress address;
 	private String nick;
+	private boolean debug;
 	private MultiCastClient multiCastClient;
 	private boolean multicast=false;
 	
-	public ChatView(Stage primaryStage, InetAddress adress, String arg){
+	public ChatView(Stage primaryStage, InetAddress adress, String arg, boolean d){
+		this.debug = d;
 		this.primaryStage=primaryStage;
 		address=adress;
 		nick=arg;
 	}
-	public ChatView(Stage primaryStage, InetAddress adress, String arg,MultiCastClient c){
+	public ChatView(Stage primaryStage, InetAddress adress, String arg,MultiCastClient c, boolean d){
 		this.primaryStage=primaryStage;
 		address=adress;
 		nick=arg;
 		multiCastClient = c;
 		multicast=true;
+		this.debug = d;
 	}
 	public void start() {
 		vb = new Scene(new VBox(),800,600);
@@ -57,6 +62,7 @@ public class ChatView {
 
 		primaryStage.setScene(vb);
 		primaryStage.show();
+
 		
 		if(multicast){
 			multiCastClient.config(message,list,buddy);
@@ -77,10 +83,14 @@ public class ChatView {
 				}
 			});
 			try {
-				client = new ClientChannel(1026, address, nick,message,list,buddy);
+				client = new ClientChannel(1026, address, nick,message,list,buddy,debug);
 			} catch (IOException | InterruptedException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				if(debug) {
+					Logger log = Logger.getLogger(Controller.class.getName());
+					ConsoleHandler ch =  new ConsoleHandler();
+					log.addHandler(ch);
+					log.severe(e1.getMessage());
+				}
 			}
 		}
 

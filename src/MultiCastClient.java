@@ -2,15 +2,15 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 
 public class MultiCastClient {
-	MultiCastReceiver receiver;
-	MultiCastSender sender;
-	Thread thread;
-	
-	public MultiCastClient() {
-		receiver = new MultiCastReceiver();
+	private MultiCastReceiver receiver;
+	private MultiCastSender sender;
+	private Thread thread;
+
+	public MultiCastClient(boolean d) {
+		receiver = new MultiCastReceiver(d);
 		thread = new Thread(receiver);
 		thread.start();
-		sender = new MultiCastSender();
+		sender = new MultiCastSender(d);
 	}
 
 	public void config(TextField message, ListView<String> list,
