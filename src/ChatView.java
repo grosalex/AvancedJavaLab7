@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Logger;
 
@@ -16,7 +17,7 @@ import javafx.stage.Stage;
 
 
 public class ChatView {
-	
+
 	private Stage primaryStage;
 	private Scene vb;
 	private ClientChannel client;
@@ -25,16 +26,24 @@ public class ChatView {
 	private boolean debug;
 	private MultiCastClient multiCastClient;
 	private boolean multicast=false;
-	
-	public ChatView(Stage primaryStage, InetAddress adress, String arg, boolean d){
+
+	public ChatView(Stage primaryStage, String adress, int port, String arg, boolean d){
 		this.debug = d;
 		this.primaryStage=primaryStage;
-		address=adress;
+		try {
+			this.address=InetAddress.getByName(adress);
+		} catch (UnknownHostException e) {
+			if(debug) {
+				Logger log = Logger.getLogger(Controller.class.getName());
+				ConsoleHandler ch =  new ConsoleHandler();
+				log.addHandler(ch);
+				log.severe(e.getMessage());
+			}
+		}
 		nick=arg;
 	}
-	public ChatView(Stage primaryStage, InetAddress adress, String arg,MultiCastClient c, boolean d){
+	public ChatView(Stage primaryStage, String arg,MultiCastClient c, boolean d){
 		this.primaryStage=primaryStage;
-		address=adress;
 		nick=arg;
 		multiCastClient = c;
 		multicast=true;
@@ -48,26 +57,26 @@ public class ChatView {
 
 		ListView<String> list = new ListView<String>();
 		list.setPrefSize(600, 400);
-        list.setEditable(true);
+		list.setEditable(true);
 		ListView<String> buddy = new ListView<String>();
 		list.setPrefSize(200, 400);
-        list.setEditable(true);
+		list.setEditable(true);
 		HBox hbTop = new HBox();
 		HBox hbBottom = new HBox();
-	
+
 		hbTop.getChildren().addAll(buddy,list);
 		hbBottom.getChildren().addAll(labelMessage,message,b);
-		
+
 		((VBox) vb.getRoot()).getChildren().addAll(hbTop,hbBottom);
 
 		primaryStage.setScene(vb);
 		primaryStage.show();
 
-		
+
 		if(multicast){
 			multiCastClient.config(message,list,buddy);
 			b.setOnAction(new EventHandler<ActionEvent>() {
-				
+
 				@Override
 				public void handle(ActionEvent event) {
 					multiCastClient.send();
@@ -96,7 +105,7 @@ public class ChatView {
 
 
 
-	/*		Thread service = new Thread(new Runnable() {
+		/*		Thread service = new Thread(new Runnable() {
 				@Override
 				public void run() {
 					try {
