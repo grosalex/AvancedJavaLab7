@@ -1,16 +1,30 @@
+import java.io.ByteArrayInputStream;
+import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.InetAddress;
 import java.nio.channels.SocketChannel;
+import java.net.DatagramPacket;
 import java.net.InetSocketAddress;
+import java.net.MulticastSocket;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.net.SocketAddress;
+import java.net.SocketOption;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
+import java.nio.channels.SocketChannel;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.channels.ServerSocketChannel;
+import java.nio.channels.SocketChannel;
+import java.nio.charset.Charset;
 
 public class ServerChannel {
 	private Map<SocketChannel,String> clientMap;
@@ -72,7 +86,7 @@ public class ServerChannel {
 					ByteBuffer buffer = ByteBuffer.allocate(256);
 					client.read(buffer);
 
-					String output = new String(buffer.array());
+					String output = new String(buffer.array()).trim();
 					broadcast(client, output);
 					System.out.println(output);
 

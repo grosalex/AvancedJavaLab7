@@ -1,9 +1,12 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.net.MulticastSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 
@@ -49,8 +52,16 @@ public class ClientChannel {
 						client.read(tmp);
 						String output = new String(tmp.array());
 						System.out.println("output :" +output);
+						items.add(output);
+						if(output.startsWith("New")){
+							System.out.println("1");
+							//buddys.add(output.split(": ")[1]);
+						}
+						else{
+							System.out.println("2");
+
 							items.add(output);
-						
+						}
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
