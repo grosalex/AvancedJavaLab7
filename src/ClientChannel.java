@@ -50,6 +50,7 @@ public class ClientChannel {
 				for(;;){
 					try {
 						client.read(tmp);
+						tmp.flip();
 						String output = new String(tmp.array());
 						System.out.println("output :" +output);
 						/*if(output.startsWith("buddy")){
@@ -57,6 +58,7 @@ public class ClientChannel {
 						}
 						else*/
 						items.add(output);
+						tmp.clear();
 					} catch (IOException e) {
 						if(debug) {
 							Logger log = Logger.getLogger(Controller.class.getName());
