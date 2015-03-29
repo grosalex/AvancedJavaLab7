@@ -75,8 +75,8 @@ public class ServerChannel {
 					msgs.put(client,client.socket().getOutputStream());
 
 					System.out.println("Accepted new connection from client: " + output);
-
-					client.write(ByteBuffer.wrap(("New user : " + output ).getBytes()));
+					broadcast(client, "buddy :"+output);
+					//client.write(ByteBuffer.wrap(("Welcome : " + output ).getBytes()));
 
 				}
 
@@ -86,6 +86,7 @@ public class ServerChannel {
 					ByteBuffer buffer = ByteBuffer.allocate(256);
 					client.read(buffer);
 
+					
 					String output = new String(buffer.array()).trim();
 					broadcast(client, output);
 					System.out.println(output);

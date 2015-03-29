@@ -44,6 +44,7 @@ public class ClientChannel {
 		client = SocketChannel.open(hostAddress);
 		ByteBuffer tmp=ByteBuffer.allocate(256);
 		client.write(ByteBuffer.wrap(nick.getBytes()));
+		items.add("Welcome :D");
 		Thread read = new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -52,15 +53,11 @@ public class ClientChannel {
 						client.read(tmp);
 						String output = new String(tmp.array());
 						System.out.println("output :" +output);
+						/*if(output.startsWith("buddy")){
+							buddys.add(output.split(":")[1]);
+						}
+						else*/
 						items.add(output);
-						if(output.startsWith("New")){
-							System.out.println("1");
-							//buddys.add(output.split(": ")[1]);
-						}
-						else{
-							System.out.println("2");
-							items.add(output);
-						}
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();

@@ -28,7 +28,7 @@ public class Controller extends Application {
 			System.out.println("here");
 			v.start();
 		}
-		if(nio){
+		else{
 			v = new ChatView(primaryStage, address, nick);
 			v.start();
 
