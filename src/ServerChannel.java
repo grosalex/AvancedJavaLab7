@@ -86,7 +86,7 @@ public class ServerChannel {
 					ByteBuffer buffer = ByteBuffer.allocate(256);
 					client.read(buffer);
 
-					String output = new String(buffer.array()).trim();
+					String output = new String(buffer.array());
 					broadcast(client, output);
 					System.out.println(output);
 

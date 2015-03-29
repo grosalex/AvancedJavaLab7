@@ -34,11 +34,8 @@ public class Controller extends Application {
 			case "c":
 				nick=args[1];
 				launch(args);
-
 				break;
 			}
-
-
 
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
