@@ -20,25 +20,27 @@ public class ChatView {
 	private ClientChannel client;
 	private InetAddress address;
 	private String nick;
+	private MultiCastClient multiCastClient;
+	private boolean multicast=false;
 	
 	public ChatView(Stage primaryStage, InetAddress adress, String arg){
 		this.primaryStage=primaryStage;
 		address=adress;
 		nick=arg;
 	}
-	
+	public ChatView(Stage primaryStage, InetAddress adress, String arg,MultiCastClient c){
+		this.primaryStage=primaryStage;
+		address=adress;
+		nick=arg;
+		multiCastClient = c;
+		multicast=true;
+	}
 	public void start() {
 		vb = new Scene(new VBox(),800,600);
 		Label labelMessage = new Label("Your Message");
 		TextField message = new TextField();
 		Button b = new Button("Send");
-		b.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				client.send(message.getText());
-				message.setText("");
-			}
-		});
+
 		ListView<String> list = new ListView<String>();
 		list.setPrefSize(600, 400);
         list.setEditable(true);
@@ -55,12 +57,34 @@ public class ChatView {
 
 		primaryStage.setScene(vb);
 		primaryStage.show();
-		try {
-			client = new ClientChannel(1026, address, nick,message,list,buddy);
-		} catch (IOException | InterruptedException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+		
+		if(multicast){
+			multiCastClient.config(message,list,buddy);
+			b.setOnAction(new EventHandler<ActionEvent>() {
+				
+				@Override
+				public void handle(ActionEvent event) {
+					multiCastClient.send();
+				}
+			});
 		}
+		else{
+			b.setOnAction(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent event) {
+					client.send(message.getText());
+					message.setText("");
+				}
+			});
+			try {
+				client = new ClientChannel(1026, address, nick,message,list,buddy);
+			} catch (IOException | InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+
+
 
 	/*		Thread service = new Thread(new Runnable() {
 				@Override

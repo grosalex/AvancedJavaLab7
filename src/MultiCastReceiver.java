@@ -3,9 +3,21 @@ import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
+
 
 public class MultiCastReceiver implements Runnable{
+	private TextField message;
+	private  ListView<String> list;
+	private ListView<String> buddy;
+	private ObservableList<String> items;
+	private ObservableList<String> buddys;
 	public MultiCastReceiver() {
+		items =FXCollections.observableArrayList();
+		buddys = FXCollections.observableArrayList();
 	}
 
 	@Override
@@ -24,10 +36,22 @@ public class MultiCastReceiver implements Runnable{
 				socket.receive(inPacket);
 				String msg = new String(inBuf, 0, inPacket.getLength());
 				System.out.println("From " + inPacket.getAddress() + " Msg : " + msg);
+				items.add("From " + inPacket.getAddress() + " Msg : " + msg);
+				list.setItems(items);
 			}
 		} catch (IOException ioe) {
 			System.out.println(ioe);
 		}
 		
+	}
+
+	public void config(TextField message, ListView<String> list,
+			ListView<String> buddy) {
+		this.message=message;
+		this.list=list;
+		this.buddy=buddy;
+		
+		this.list.setItems(items);
+		this.buddy.setItems(buddys);
 	}
 }

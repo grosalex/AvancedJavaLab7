@@ -59,7 +59,6 @@ public class ClientChannel {
 						}
 						else{
 							System.out.println("2");
-
 							items.add(output);
 						}
 					} catch (IOException e) {
