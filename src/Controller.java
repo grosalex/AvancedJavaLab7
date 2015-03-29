@@ -92,7 +92,7 @@ public class Controller extends Application {
 		longopts [5] = new LongOpt ( "server" , LongOpt.NO_ARGUMENT , null , 's' ) ;
 		longopts [6] = new LongOpt ( "debug" , LongOpt.NO_ARGUMENT , null , 'd' ) ;
 		longopts [7] = new LongOpt ( "nick" , LongOpt.REQUIRED_ARGUMENT , null , 'w' ) ;
-		Getopt g = new Getopt ( "Chat" , args, "a:hnp:msdn:" ,longopts ) ;
+		Getopt g = new Getopt ( "Chat" , args, "a:hnp:msdw:" ,longopts ) ;
 		int c ;
 		while ((c=g.getopt())!=-1){
 			switch ( c ) {
