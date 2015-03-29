@@ -23,12 +23,14 @@ public class ChatView {
 	private ClientChannel client;
 	private InetAddress address;
 	private String nick;
+	private int port;
 	private boolean debug;
 	private MultiCastClient multiCastClient;
 	private boolean multicast=false;
 
 	public ChatView(Stage primaryStage, String adress, int port, String arg, boolean d){
 		this.debug = d;
+		this.port = port;
 		this.primaryStage=primaryStage;
 		try {
 			this.address=InetAddress.getByName(adress);
@@ -92,7 +94,7 @@ public class ChatView {
 				}
 			});
 			try {
-				client = new ClientChannel(1026, address, nick,message,list,buddy,debug);
+				client = new ClientChannel(address,port, nick,message,list,buddy,debug);
 			} catch (IOException | InterruptedException e1) {
 				if(debug) {
 					Logger log = Logger.getLogger(Controller.class.getName());
