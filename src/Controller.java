@@ -13,8 +13,7 @@ import javafx.stage.Stage;
 public class Controller extends Application {
 
 	private ChatView v;
-	private static InetAddress address;
-	private static String addressString;
+	private static String address;
 	private static String nick;
 	private static int port;
 	private static boolean nio;
@@ -26,30 +25,32 @@ public class Controller extends Application {
 	public void start(Stage primaryStage) {
 		if(multicast){
 			MultiCastClient c = new MultiCastClient(debug);
-			v = new ChatView(primaryStage, address, nick,c,debug);
-			System.out.println("here");
+			v = new ChatView(primaryStage, nick,c,debug);
 			v.start();
 		}
-		if(nio){
-			v = new ChatView(primaryStage, address, nick,debug);
+		else {
+			v = new ChatView(primaryStage, address,port, nick,debug);
 			v.start();
-
 		}
 	}
 
 	public static void main(String[] args) {
 		try {
-			address = InetAddress.getByName("233.11.12.13");
-			addressString = "127.0.0.1";
+			nio = false;
+			debug = false;
+			server = false;
+			multicast = false;
+			address = "127.0.0.1";
 			port = 5454;
 			nick = "Guest";
 
 			options(args);
-
-			switch(args[0]){
-			case "s": 
+			if(multicast) {
+				launch(args);
+			}
+			else if (nio) {
 				try {
-					ServerChannel server = new ServerChannel(debug);
+					new ServerChannel(address,port,debug);
 				} catch (IOException e) {
 					if(debug) {
 						Logger log = Logger.getLogger(Controller.class.getName());
@@ -58,18 +59,13 @@ public class Controller extends Application {
 						log.severe(e.getMessage());
 					}
 				}
-
-				break;
-			case "c":
-				nick=args[1];
+			}
+			else if(server){
+				Server s= new Server(port, InetAddress.getByName(address), debug);
+				s.start();
+			}
+			else {
 				launch(args);
-				break;
-			case "m":
-				System.out.println("there");
-				multicast=true;
-				launch(args);
-
-				break;
 			}
 
 		} catch (UnknownHostException e) {
@@ -100,7 +96,7 @@ public class Controller extends Application {
 		while ((c=g.getopt())!=-1){
 			switch ( c ) {
 			case 'a':
-				addressString = g.getOptarg();
+				address = g.getOptarg();
 				break;
 			case 'h':
 				System.out.println("-a , -- address = ADDR set the IP address");

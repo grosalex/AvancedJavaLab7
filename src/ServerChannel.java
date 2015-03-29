@@ -34,7 +34,7 @@ public class ServerChannel {
 	HashMap <SocketChannel,OutputStream> msgs;
 	private boolean debug;
 
-	public ServerChannel(boolean d) throws IOException{
+	public ServerChannel(String address,int port,boolean d) throws IOException{
 		this.debug = d;
 		Selector selector = Selector.open();
 		msgs = new HashMap<>();
@@ -42,7 +42,7 @@ public class ServerChannel {
 		clientMap = new HashMap<SocketChannel, String>();
 		ServerSocketChannel serverSocket = ServerSocketChannel.open();
 
-		InetSocketAddress hostAddress = new InetSocketAddress("localhost", 5454);
+		InetSocketAddress hostAddress = new InetSocketAddress(address, port);
 
 		serverSocket.bind(hostAddress);
 
