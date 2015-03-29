@@ -40,6 +40,7 @@ public class Controller extends Application {
 			address = InetAddress.getByName("233.11.12.13");
 			addressString = "127.0.0.1";
 			port = 5454;
+			nick = "Guest";
 			
 			options(args);
 			
@@ -73,7 +74,7 @@ public class Controller extends Application {
 	}
 
 	public static void options(String[] args)  {
-		LongOpt[] longopts = new LongOpt [7] ;
+		LongOpt[] longopts = new LongOpt [8] ;
 		StringBuffer sb = new StringBuffer( ) ;
 		longopts[0] = new LongOpt ( "address" , LongOpt.REQUIRED_ARGUMENT , sb , 'a' ) ;
 		longopts [1] = new LongOpt ( "help" , LongOpt.NO_ARGUMENT , null , 'h' ) ;
@@ -82,7 +83,8 @@ public class Controller extends Application {
 		longopts [4] = new LongOpt ( "multicast" , LongOpt.NO_ARGUMENT , null , 'm' ) ;
 		longopts [5] = new LongOpt ( "server" , LongOpt.NO_ARGUMENT , null , 's' ) ;
 		longopts [6] = new LongOpt ( "debug" , LongOpt.NO_ARGUMENT , null , 'd' ) ;
-		Getopt g = new Getopt ( "Chat" , args, "a:hnp:msd" ,longopts ) ;
+		longopts [7] = new LongOpt ( "nick" , LongOpt.REQUIRED_ARGUMENT , null , 'w' ) ;
+		Getopt g = new Getopt ( "Chat" , args, "a:hnp:msdn:" ,longopts ) ;
 		int c ;
 		while ((c=g.getopt())!=-1){
 			switch ( c ) {
@@ -113,6 +115,12 @@ public class Controller extends Application {
 				break;
 			case 'd':
 				debug = true;
+				break;
+				
+			case 'w':
+				nick = g.getOptarg();
+				break;
+				
 			default:
 				System.out.println("Invalid option");
 			}
