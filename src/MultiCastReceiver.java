@@ -2,10 +2,14 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Logger;
 
 
 public class MultiCastReceiver implements Runnable{
-	public MultiCastReceiver() {
+	private boolean debug;
+	public MultiCastReceiver(boolean debug) {
+		this.debug = debug;
 	}
 
 	@Override
@@ -26,7 +30,12 @@ public class MultiCastReceiver implements Runnable{
 				System.out.println("From " + inPacket.getAddress() + " Msg : " + msg);
 			}
 		} catch (IOException ioe) {
-			System.out.println(ioe);
+			if(debug) {
+				Logger log = Logger.getLogger(Controller.class.getName());
+				ConsoleHandler ch =  new ConsoleHandler();
+				log.addHandler(ch);
+				log.severe(ioe.getMessage());
+			}
 		}
 		
 	}

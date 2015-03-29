@@ -1,5 +1,7 @@
 import java.io.IOException;
 import java.net.InetAddress;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Logger;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -20,8 +22,10 @@ public class ChatView {
 	private ClientChannel client;
 	private InetAddress address;
 	private String nick;
+	private boolean debug;
 	
-	public ChatView(Stage primaryStage, InetAddress adress, String arg){
+	public ChatView(Stage primaryStage, InetAddress adress, String arg, boolean d){
+		this.debug = d;
 		this.primaryStage=primaryStage;
 		address=adress;
 		nick=arg;
@@ -56,10 +60,14 @@ public class ChatView {
 		primaryStage.setScene(vb);
 		primaryStage.show();
 		try {
-			client = new ClientChannel(1026, address, nick,message,list,buddy);
+			client = new ClientChannel(1026, address, nick,message,list,buddy,debug);
 		} catch (IOException | InterruptedException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			if(debug) {
+				Logger log = Logger.getLogger(Controller.class.getName());
+				ConsoleHandler ch =  new ConsoleHandler();
+				log.addHandler(ch);
+				log.severe(e1.getMessage());
+			}
 		}
 
 	/*		Thread service = new Thread(new Runnable() {

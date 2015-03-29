@@ -4,9 +4,13 @@ import java.io.InputStreamReader;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Logger;
 
 public class MultiCastSender {
-	public MultiCastSender(){
+	private boolean debug;
+	public MultiCastSender(boolean d){
+		this.debug = d;
 		DatagramSocket socket = null;
 		DatagramPacket outPacket = null;
 		byte[] outBuf;
@@ -23,7 +27,12 @@ public class MultiCastSender {
 					entreeClavier = new BufferedReader(new InputStreamReader(System.in));
 					msg = entreeClavier.readLine();
 				}    catch (Exception exc) {
-					System.out.println(exc);
+					if(debug) {
+						Logger log = Logger.getLogger(Controller.class.getName());
+						ConsoleHandler ch =  new ConsoleHandler();
+						log.addHandler(ch);
+						log.severe(exc.getMessage());
+					}
 				}
 				if(msg!="") {
 					outBuf = msg.getBytes();
@@ -37,7 +46,12 @@ public class MultiCastSender {
 
 			}
 		} catch (IOException ioe) {
-			System.out.println(ioe);
+			if(debug) {
+				Logger log = Logger.getLogger(Controller.class.getName());
+				ConsoleHandler ch =  new ConsoleHandler();
+				log.addHandler(ch);
+				log.severe(ioe.getMessage());
+			}
 		}
 	}
 }

@@ -1,13 +1,12 @@
 public class MultiCastClient {
-	MultiCastReceiver receiver;
-	MultiCastSender sender;
-	Thread thread;
+	private MultiCastReceiver receiver;
+	private MultiCastSender sender;
+	private Thread thread;
 	
-	public MultiCastClient() {
-		receiver = new MultiCastReceiver();
-		
+	public MultiCastClient(boolean d) {
+		receiver = new MultiCastReceiver(d);
 		thread = new Thread(receiver);
 		thread.start();
-		sender = new MultiCastSender();
+		sender = new MultiCastSender(d);
 	}
 }
