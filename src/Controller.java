@@ -7,8 +7,6 @@ import java.net.UnknownHostException;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Logger;
 
-import javax.security.auth.login.LoginContext;
-
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -26,9 +24,17 @@ public class Controller extends Application {
 
 
 	public void start(Stage primaryStage) {
+		if(multicast){
+			MultiCastClient c = new MultiCastClient(debug);
+			v = new ChatView(primaryStage, address, nick,c,debug);
+			System.out.println("here");
+			v.start();
+		}
+		if(nio){
+			v = new ChatView(primaryStage, address, nick,debug);
+			v.start();
 
-		v = new ChatView(primaryStage, address, nick,debug);
-		v.start();
+		}
 	}
 
 	public static void main(String[] args) {
@@ -59,7 +65,10 @@ public class Controller extends Application {
 				launch(args);
 				break;
 			case "m":
-				MultiCastClient c = new MultiCastClient(debug);
+				System.out.println("there");
+				multicast=true;
+				launch(args);
+
 				break;
 			}
 
@@ -109,6 +118,7 @@ public class Controller extends Application {
 				port = Integer.parseInt(g.getOptarg());
 				break;
 			case 'm':
+				System.out.println("over");
 				multicast = true;
 				break;
 			case 's':
