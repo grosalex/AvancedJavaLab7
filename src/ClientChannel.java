@@ -18,6 +18,7 @@ public class ClientChannel {
 	private InetAddress group;
 	private String msg;
 	private String myNick;
+	private InetAddress address;
 	private SocketChannel client;
 	private int port;
 	private TextField message;
@@ -27,8 +28,9 @@ public class ClientChannel {
 	private ObservableList<String> buddys;
 	private boolean debug;
 
-	public ClientChannel(int port, InetAddress inet, String nick, TextField message, ListView<String> list, ListView<String> buddy, boolean d) throws IOException, InterruptedException {
+	public ClientChannel(InetAddress address,int port, String nick, TextField message, ListView<String> list, ListView<String> buddy, boolean d) throws IOException, InterruptedException {
 		myNick=nick;
+		this.address = address;
 		this.message = message;
 		this.list=list;
 		this.buddy=buddy;
@@ -38,7 +40,7 @@ public class ClientChannel {
 		buddys = FXCollections.observableArrayList();
 		list.setItems(items);
 		buddy.setItems(buddys);
-		InetSocketAddress hostAddress = new InetSocketAddress("localhost", 5454);
+		InetSocketAddress hostAddress = new InetSocketAddress(address, port);
 
 		client = SocketChannel.open(hostAddress);
 		ByteBuffer tmp=ByteBuffer.allocate(256);
