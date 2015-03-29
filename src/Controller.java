@@ -44,7 +44,11 @@ public class Controller {
 					e.printStackTrace();
 				}
 				break;
+			case "m":
+				MultiCastClient c = new MultiCastClient();
+				break;
 			}
+			
 
 
 
